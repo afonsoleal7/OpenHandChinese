@@ -2,6 +2,7 @@ package org.academiadecodigo.javabank.test;
 
 import org.academiadecodigo.javabank.domain.Customer;
 import org.academiadecodigo.javabank.domain.account.AccountType;
+import org.academiadecodigo.javabank.domain.account.SavingsAccount;
 import org.academiadecodigo.javabank.managers.AccountManager;
 
 public class CustomerTest {
@@ -9,29 +10,35 @@ public class CustomerTest {
     public boolean test() {
 
         AccountManager accountManager = new AccountManager();
-        Customer customer = new Customer();
+        Customer customer = new Customer(1, "Rui");
         customer.setAccountManager(accountManager);
 
-        // customer should start with zero balance
-        if (customer.getBalance() != 0) {
+        // customer should not contain any accounts
+        if (customer.getAccountIds().size() != 0) {
             return false;
         }
 
-        int a1 = customer.openAccount(AccountType.CHECKING);
-        int a2 = customer.openAccount(AccountType.SAVINGS);
-        accountManager.deposit(a1, 100);
-        accountManager.deposit(a2, 120);
+        // should be able to open accounts
+        int ac = customer.openAccount(AccountType.CHECKING);
+        int as = customer.openAccount(AccountType.SAVINGS);
 
-        // customer balance should equal sum of all accounts balance
-        if (customer.getBalance() != 220) {
+        if (customer.getAccountIds().size() != 2) {
             return false;
         }
 
-        // customer should be able to get balance for its accounts
-        if (customer.getBalance(a1) != 100 || customer.getBalance(a2) != 120) {
+        // customer should be able to get the balance of each individual account
+        accountManager.deposit(ac, 100);
+        accountManager.deposit(as, SavingsAccount.MIN_BALANCE + 100);
+        if (customer.getBalance(ac) != 100 || customer.getBalance(as) != SavingsAccount.MIN_BALANCE + 100) {
+            return false;
+        }
+
+        // customer should be able to get the combined balance of all its accounts
+        if (customer.getBalance() != 200 + SavingsAccount.MIN_BALANCE) {
             return false;
         }
 
         return true;
     }
+
 }

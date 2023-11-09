@@ -2,7 +2,7 @@ package org.academiadecodigo.javabank.domain;
 
 import org.academiadecodigo.javabank.managers.AccountManager;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -11,26 +11,32 @@ import java.util.Set;
 public class Bank {
 
     private AccountManager accountManager;
-    private Set<Customer> customers = new HashSet<>();
+    private HashMap<Integer, Customer> customers;
 
     /**
-     * Creates a new instance of Bank and initializes it with the given account manager
-     *
-     * @param accountManager the account manager
+     * Creates a new instance of {@code Bank}
      */
-    public Bank(AccountManager accountManager) {
-        this.accountManager = accountManager;
+    public Bank() {
+        this.customers = new HashMap<>();
     }
 
     /**
-     * Adds a new customer to the bank
+     * Gets the customer
      *
-     * @param customer the new bank customer
-     * @see Customer#setAccountManager(AccountManager)
+     * @param id the customer id
+     * @return the customer
      */
-    public void addCustomer(Customer customer) {
-        customers.add(customer);
-        customer.setAccountManager(accountManager);
+    public Customer getCustomer(int id) {
+        return customers.get(id);
+    }
+
+    /**
+     * Gets the ids of the bank customers
+     *
+     * @return customer ids
+     */
+    public Set<Integer> getCustomerIds() {
+        return customers.keySet();
     }
 
     /**
@@ -42,10 +48,39 @@ public class Bank {
 
         double balance = 0;
 
-        for (Customer customer : customers) {
+        for (Customer customer : customers.values()) {
             balance += customer.getBalance();
         }
 
         return balance;
+    }
+
+    /**
+     * Gets the account manager
+     *
+     * @return the account manager
+     */
+    public AccountManager getAccountManager() {
+        return accountManager;
+    }
+
+    /**
+     * Sets the account manager
+     *
+     * @param accountManager the account manager to set
+     */
+    public void setAccountManager(AccountManager accountManager) {
+        this.accountManager = accountManager;
+    }
+
+    /**
+     * Adds a new customer to the bank
+     *
+     * @param customer the new bank customer
+     * @see Customer#setAccountManager(AccountManager)
+     */
+    public void addCustomer(Customer customer) {
+        customers.put(customer.getId(), customer);
+        customer.setAccountManager(accountManager);
     }
 }

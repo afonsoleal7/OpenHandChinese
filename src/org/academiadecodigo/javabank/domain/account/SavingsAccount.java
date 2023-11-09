@@ -6,17 +6,17 @@ package org.academiadecodigo.javabank.domain.account;
  * @see Account
  * @see AccountType#SAVINGS
  */
-public class SavingsAccount extends Account {
+public class SavingsAccount extends AbstractAccount {
 
     /**
      * The minimum balance to maintain on the account
      */
-    private static final double MIN_BALANCE = 100;
+    public static final double MIN_BALANCE = 100;
 
     /**
      * Creates a new {@code SavingsAccount} instance
      *
-     * @see Account#Account(int)
+     * @see AbstractAccount#AbstractAccount(int)
      */
     public SavingsAccount(int id) {
         super(id);

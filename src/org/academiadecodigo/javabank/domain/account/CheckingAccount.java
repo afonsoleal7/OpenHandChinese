@@ -5,12 +5,12 @@ package org.academiadecodigo.javabank.domain.account;
  * @see Account
  * @see AccountType#CHECKING
  */
-public class CheckingAccount extends Account {
+public class CheckingAccount extends AbstractAccount {
 
     /**
      * Creates a new {@code CheckingAccount} instance
      *
-     * @see Account#Account(int)
+     * @see AbstractAccount#AbstractAccount(int)
      */
     public CheckingAccount(int id) {
         super(id);
@@ -23,4 +23,5 @@ public class CheckingAccount extends Account {
     public AccountType getAccountType() {
         return AccountType.CHECKING;
     }
+
 }

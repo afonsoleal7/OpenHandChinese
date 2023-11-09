@@ -4,18 +4,38 @@ public class Test {
 
     public static void main(String[] args) {
 
-        CheckingAccountTest checkingAccountTest = new CheckingAccountTest();
-        SavingsAccountTest savingsAccountTest = new SavingsAccountTest();
-        AccountManagerTest accountManagerTest = new AccountManagerTest();
-        CustomerTest customerTest = new CustomerTest();
-        BankTest bankTest = new BankTest();
-
-        System.out.println("CheckingAccount: " + (checkingAccountTest.test() ? "OK" : "FAIL"));
-        System.out.println("SavingsAccount: " + (savingsAccountTest.test() ? "OK" : "FAIL"));
-        System.out.println("AccountManager: " + (accountManagerTest.test() ? "OK" : "FAIL"));
-        System.out.println("Customer: " + (customerTest.test() ? "OK" : "FAIL"));
-        System.out.println("Bank: " + (bankTest.test() ? "OK" : "FAIL"));
+        Test test = new Test();
+        test.testAccount();
+        test.testCustomer();
+        test.testAccountManager();
+        test.testBank();
 
     }
 
+    private static String getResult(boolean result) {
+        return result ? "OK" : "FAIL";
+    }
+
+    private void testAccount() {
+
+        CheckingAccountTest checkingAccountTest = new CheckingAccountTest();
+        SavingsAccountTest savingsAccountTest = new SavingsAccountTest();
+        System.out.println("Checking Account: " + Test.getResult(checkingAccountTest.test()));
+        System.out.println("Savings Account: " + Test.getResult(savingsAccountTest.test()));
+    }
+
+    private void testCustomer() {
+        CustomerTest customerTest = new CustomerTest();
+        System.out.println("Customer: " + Test.getResult(customerTest.test()));
+    }
+
+    private void testAccountManager() {
+        AccountManagerTest accountManagerTest = new AccountManagerTest();
+        System.out.println("AccountManager: " + Test.getResult(accountManagerTest.test()));
+    }
+
+    private void testBank() {
+        BankTest bankTest = new BankTest();
+        System.out.println("Bank: " + Test.getResult(bankTest.test()));
+    }
 }

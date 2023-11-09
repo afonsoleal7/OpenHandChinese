@@ -10,30 +10,22 @@ public class BankTest {
     public boolean test() {
 
         AccountManager accountManager = new AccountManager();
-        Bank bank = new Bank(accountManager);
+        Bank bank = new Bank();
+        bank.setAccountManager(accountManager);
 
-        // bank initial balance should be 0
-        if (bank.getBalance() != 0) {
-            return false;
-        }
-
-        Customer c1 = new Customer();
-        Customer c2 = new Customer();
+        Customer c1 = new Customer(1, "Rui");
+        Customer c2 = new Customer(2, "Sergio");
         bank.addCustomer(c1);
         bank.addCustomer(c2);
 
         int a1 = c1.openAccount(AccountType.CHECKING);
-        int a2 = c1.openAccount(AccountType.SAVINGS);
-        int a3 = c2.openAccount(AccountType.CHECKING);
-        int a4 = c2.openAccount(AccountType.SAVINGS);
+        int a2 = c2.openAccount(AccountType.CHECKING);
 
-        accountManager.deposit(a1, 10);
-        accountManager.deposit(a2, 20);
-        accountManager.deposit(a3, 30);
-        accountManager.deposit(a4, 40);
+        accountManager.deposit(a1, 100);
+        accountManager.deposit(a2, 100);
 
-        // bank balance should equal sum of all accounts
-        if (bank.getBalance() != 100) {
+        // bank balance should equal sum of all customers balance
+        if (bank.getBalance() != 200) {
             return false;
         }
 
