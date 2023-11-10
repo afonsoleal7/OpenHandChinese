@@ -1,4 +1,4 @@
-package org.academiadecodigo.javabank.domain.account;
+package org.academiadecodigo.javabank.model.account;
 
 /**
  * A generic account domain entity to be used as a base for concrete types of accounts
@@ -78,7 +78,7 @@ public abstract class AbstractAccount implements Account {
     /**
      * @see Account#canWithdraw()
      */
-    public boolean canWithdraw(){
+    public boolean canWithdraw() {
         return true;
     }
 }

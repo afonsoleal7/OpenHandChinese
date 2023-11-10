@@ -1,9 +1,9 @@
 package org.academiadecodigo.javabank.test;
 
-import org.academiadecodigo.javabank.domain.account.Account;
-import org.academiadecodigo.javabank.domain.account.AccountType;
-import org.academiadecodigo.javabank.domain.account.SavingsAccount;
 import org.academiadecodigo.javabank.managers.AccountManager;
+import org.academiadecodigo.javabank.model.account.Account;
+import org.academiadecodigo.javabank.model.account.AccountType;
+import org.academiadecodigo.javabank.model.account.SavingsAccount;
 
 public class AccountManagerTest {
 
@@ -20,13 +20,13 @@ public class AccountManagerTest {
             return false;
         }
 
-        // should be able to withdraw from checking account
+        // should be able to withdraw
         accountManager.withdraw(ac.getId(), 1);
         if (ac.getBalance() != 9) {
             return false;
         }
 
-        // should not be able to withdraw from saving account
+        // should not be able to withdraw
         accountManager.withdraw(as.getId(), 30);
         if (as.getBalance() != 110) {
             return false;

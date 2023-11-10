@@ -1,8 +1,6 @@
-package org.academiadecodigo.javabank.domain;
+package org.academiadecodigo.javabank.model;
 
-import org.academiadecodigo.javabank.domain.account.Account;
-import org.academiadecodigo.javabank.domain.account.AccountType;
-import org.academiadecodigo.javabank.managers.AccountManager;
+import org.academiadecodigo.javabank.model.account.Account;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +15,6 @@ public class Customer {
     private int id;
     private String name;
 
-    private AccountManager accountManager;
     private Map<Integer, Account> accounts = new HashMap<>();
 
     /**
@@ -47,14 +44,6 @@ public class Customer {
      */
     public String getName() {
         return name;
-    }
-
-    /** Sets the account manager
-     *
-     * @param accountManager the account manager to set
-     */
-    public void setAccountManager(AccountManager accountManager) {
-        this.accountManager = accountManager;
     }
 
     /**
@@ -101,16 +90,12 @@ public class Customer {
     }
 
     /**
-     * Opens a new account
+     * Adds a new account to the customer
      *
-     * @param accountType the account type to be opened
-     * @return the new account id
-     * @see AccountManager#openAccount(AccountType)
+     * @param account the account to add
      */
-    public int openAccount(AccountType accountType) {
-        Account account = accountManager.openAccount(accountType);
+    public void addAccount(Account account) {
         accounts.put(account.getId(), account);
-        return account.getId();
     }
 }
 

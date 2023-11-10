@@ -1,33 +1,32 @@
-package org.academiadecodigo.javabank.application;
+package org.academiadecodigo.javabank.view;
 
-import org.academiadecodigo.javabank.application.operations.BalanceOperation;
-import org.academiadecodigo.javabank.application.operations.NewAccountOperation;
-import org.academiadecodigo.javabank.application.operations.Operation;
-import org.academiadecodigo.javabank.application.operations.transaction.DepositOperation;
-import org.academiadecodigo.javabank.application.operations.transaction.WithdrawOperation;
+import org.academiadecodigo.javabank.controller.BalanceController;
+import org.academiadecodigo.javabank.controller.NewAccountController;
+import org.academiadecodigo.javabank.controller.transaction.DepositController;
+import org.academiadecodigo.javabank.controller.transaction.WithdrawalController;
 
 /**
- * The possible {@link Operation} types
+ * The possible operation types
  */
 public enum UserOptions {
 
     /**
-     * @see BalanceOperation
+     * @see BalanceController
      */
     GET_BALANCE(1, Messages.MENU_GET_BALANCE),
 
     /**
-     * @see DepositOperation
+     * @see DepositController
      */
     DEPOSIT(2, Messages.MENU_DEPOSIT),
 
     /**
-     * @see WithdrawOperation
+     * @see WithdrawalController
      */
     WITHDRAW(3, Messages.MENU_WITHDRAW),
 
     /**
-     * @see NewAccountOperation
+     * @see NewAccountController
      */
     OPEN_ACCOUNT(4, Messages.MENU_OPEN_ACCOUNT),
 
@@ -65,7 +64,7 @@ public enum UserOptions {
     /**
      * Gets the messages for the options the user can perform
      *
-     * @return Returns an array containing all the messages
+     * @return an array containing all the messages
      */
     public static String[] getMessages() {
 

@@ -1,4 +1,4 @@
-package org.academiadecodigo.javabank.domain;
+package org.academiadecodigo.javabank.model;
 
 import org.academiadecodigo.javabank.managers.AccountManager;
 
@@ -13,30 +13,13 @@ public class Bank {
     private AccountManager accountManager;
     private HashMap<Integer, Customer> customers;
 
+    private int loginCustomer;
+
     /**
-     * Creates a new instance of {@code Bank}
+     * Creates a new instance of Bank
      */
     public Bank() {
         this.customers = new HashMap<>();
-    }
-
-    /**
-     * Gets the customer
-     *
-     * @param id the customer id
-     * @return the customer
-     */
-    public Customer getCustomer(int id) {
-        return customers.get(id);
-    }
-
-    /**
-     * Gets the ids of the bank customers
-     *
-     * @return customer ids
-     */
-    public Set<Integer> getCustomerIds() {
-        return customers.keySet();
     }
 
     /**
@@ -73,14 +56,40 @@ public class Bank {
         this.accountManager = accountManager;
     }
 
+
+    /**
+     * Gets the ids of the bank customers
+     *
+     * @return customer ids
+     */
+    public Set<Integer> getCustomerIds() {
+        return customers.keySet();
+    }
+
+    /**
+     * Gets the logged in customer
+     *
+     * @return the customer
+     */
+    public Customer getLoginCustomer() {
+        return customers.get(loginCustomer);
+    }
+
+    /**
+     * Sets the logged in customer
+     *
+     * @param id the customer id
+     */
+    public void setLoginCustomer(int id) {
+        this.loginCustomer = id;
+    }
+
     /**
      * Adds a new customer to the bank
      *
      * @param customer the new bank customer
-     * @see Customer#setAccountManager(AccountManager)
      */
     public void addCustomer(Customer customer) {
         customers.put(customer.getId(), customer);
-        customer.setAccountManager(accountManager);
     }
 }

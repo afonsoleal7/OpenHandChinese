@@ -66,3 +66,10 @@ Represents a Bank Account, contains money
 * AccountFactory decouples Account usage from Account creation logic
 * Strategy pattern used for executing multiple bank operations and account transaction operations
 * Console based user interface implemented using the propmt-view lib
+* MVC architecture 
+
+### MVC notes
+In classic MVC the Model notifies the view for changes, but it is also correct to
+have the view reading the model, either directly or indirectly via the controller.
+What can not happen is for the view to update the model directly. 
+Model updates must always be done via the controller.

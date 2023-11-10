@@ -1,4 +1,4 @@
-package org.academiadecodigo.javabank.domain.account;
+package org.academiadecodigo.javabank.model.account;
 
 /**
  * A checking account with no restrictions
@@ -23,5 +23,4 @@ public class CheckingAccount extends AbstractAccount {
     public AccountType getAccountType() {
         return AccountType.CHECKING;
     }
-
 }
