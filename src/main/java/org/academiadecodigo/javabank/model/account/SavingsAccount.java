@@ -8,9 +8,6 @@ package org.academiadecodigo.javabank.model.account;
  */
 public class SavingsAccount extends AbstractAccount {
 
-    /**
-     * The minimum balance to maintain on the account
-     */
     public static final double MIN_BALANCE = 100;
 
     /**
@@ -22,9 +19,6 @@ public class SavingsAccount extends AbstractAccount {
     }
 
     /**
-     * Checks if the account can be debited without going below the minimum balance
-     *
-     * @see SavingsAccount#MIN_BALANCE
      * @see Account#canDebit(double)
      */
     @Override

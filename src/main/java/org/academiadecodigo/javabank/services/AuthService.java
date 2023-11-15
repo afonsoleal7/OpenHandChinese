@@ -22,4 +22,5 @@ public interface AuthService {
      * @return the customer
      */
     Customer getAccessingCustomer();
+
 }

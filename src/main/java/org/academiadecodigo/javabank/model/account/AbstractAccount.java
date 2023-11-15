@@ -13,7 +13,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
     /**
      * @see Account#getBalance()
      */
-    @Override
     public double getBalance() {
         return balance;
     }
@@ -21,7 +20,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
     /**
      * @see Account#getAccountType()
      */
-    @Override
     public abstract AccountType getAccountType();
 
     /**
@@ -30,7 +28,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
      * @param amount the amount to credit
      * @see Account#credit(double)
      */
-    @Override
     public void credit(double amount) {
         if (canCredit(amount)) {
             balance += amount;
@@ -43,7 +40,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
      * @param amount the amount to debit
      * @see Account#canDebit(double)
      */
-    @Override
     public void debit(double amount) {
         if (canDebit(amount)) {
             balance -= amount;
@@ -53,7 +49,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
     /**
      * @see Account#canCredit(double)
      */
-    @Override
     public boolean canCredit(double amount) {
         return amount > 0;
     }
@@ -61,7 +56,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
     /**
      * @see Account#canDebit(double)
      */
-    @Override
     public boolean canDebit(double amount) {
         return amount > 0 && amount <= balance;
     }
@@ -69,7 +63,6 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
     /**
      * @see Account#canWithdraw()
      */
-    @Override
     public boolean canWithdraw() {
         return true;
     }

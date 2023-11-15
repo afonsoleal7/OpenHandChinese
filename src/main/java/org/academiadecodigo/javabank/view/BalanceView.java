@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class BalanceView implements View {
 
-    private DecimalFormat df = new DecimalFormat("#.##");
     private BalanceController balanceController;
+    private DecimalFormat df = new DecimalFormat("#.##");
 
     /**
      * Sets the controller responsible for rendering the view

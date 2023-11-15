@@ -57,9 +57,9 @@ public class CustomerServiceImpl implements CustomerService {
      * @see CustomerService#getBalance(int)
      */
     @Override
-    public double getBalance(int customerId) {
+    public double getBalance(int id) {
 
-        List<Account> accounts = customerMap.get(customerId).getAccounts();
+        List<Account> accounts = customerMap.get(id).getAccounts();
 
         double balance = 0;
         for (Account account : accounts) {

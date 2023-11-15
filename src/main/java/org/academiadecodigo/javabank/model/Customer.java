@@ -57,7 +57,6 @@ public class Customer extends AbstractModel {
     public void removeAccount(Account account) {
         accounts.remove(account);
     }
-
 }
 
 

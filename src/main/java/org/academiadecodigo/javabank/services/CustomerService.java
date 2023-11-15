@@ -36,10 +36,10 @@ public interface CustomerService {
     /**
      * Gets the balance of the customer
      *
-     * @param customerId the customer id
+     * @param id the customer id
      * @return the balance of the customer with the given id
      */
-    double getBalance(int customerId);
+    double getBalance(int id);
 
     /**
      * Adds a customer to the service

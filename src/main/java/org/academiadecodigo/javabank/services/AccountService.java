@@ -38,4 +38,5 @@ public interface AccountService {
      * @param amount the amount to transfer
      */
     void transfer(int srcId, int dstId, double amount);
+
 }
