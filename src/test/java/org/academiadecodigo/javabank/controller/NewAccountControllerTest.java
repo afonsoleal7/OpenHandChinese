@@ -37,10 +37,10 @@ public class NewAccountControllerTest {
         when(authService.getAccessingCustomer()).thenReturn(customer);
 
         // wire them all
-        newAccountController.setAccountFactory(accountFactory);
         newAccountController.setAccountService(accountService);
         newAccountController.setAuthService(authService);
         newAccountController.setView(view);
+        newAccountController.setAccountFactory(accountFactory);
 
     }
 

@@ -8,6 +8,14 @@ import org.academiadecodigo.javabank.model.account.Account;
 public interface AccountService {
 
     /**
+     * gets an account by its id number
+     *
+     * @param id the id of the account to get
+     * @return the account with the given id
+     */
+    Account get(Integer id);
+
+    /**
      * Adds an account to the service
      *
      * @param account the account to add

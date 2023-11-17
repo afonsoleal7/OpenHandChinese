@@ -9,6 +9,7 @@ import org.academiadecodigo.javabank.model.AbstractModel;
 public abstract class AbstractAccount extends AbstractModel implements Account {
 
     private double balance = 0;
+    private Integer customerId;
 
     /**
      * @see Account#getBalance()
@@ -65,5 +66,15 @@ public abstract class AbstractAccount extends AbstractModel implements Account {
      */
     public boolean canWithdraw() {
         return true;
+    }
+
+    @Override
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    @Override
+    public void setCustomerId(Integer id) {
+        customerId = id;
     }
 }

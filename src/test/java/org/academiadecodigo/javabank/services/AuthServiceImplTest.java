@@ -68,7 +68,7 @@ public class AuthServiceImplTest {
         Customer customer = authService.getAccessingCustomer();
 
         // verify
-        verify(customerService, times(1)).get(fakeId);
+        verify(customerService, times(2)).get(fakeId);
         assertEquals(fakeCustomer, customer);
 
     }

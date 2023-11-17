@@ -1,21 +1,20 @@
 package org.academiadecodigo.javabank.services;
 
 import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.SavingsAccount;
+import org.academiadecodigo.javabank.services.mock.MockAccountService;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 
-public class AccountServiceImplTest {
+public class MockAccountServiceTest {
 
     private AccountService accountService;
 
     @Before
     public void setup() {
-        accountService = new AccountServiceImpl();
+        accountService = new MockAccountService();
     }
 
     @Test

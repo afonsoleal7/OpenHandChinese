@@ -99,7 +99,7 @@ public class MainControllerTest {
 
         // setup a fake accessing customer
         String name = "Rui";
-        when(customer.getName()).thenReturn(name);
+        when(customer.getFirstName()).thenReturn(name);
         when(authService.getAccessingCustomer()).thenReturn(customer);
 
         assertEquals(mainController.getCustomerName(), name);

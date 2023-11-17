@@ -1,14 +1,15 @@
-package org.academiadecodigo.javabank.services;
+package org.academiadecodigo.javabank.services.mock;
 
 import org.academiadecodigo.javabank.model.Customer;
 import org.academiadecodigo.javabank.model.account.Account;
+import org.academiadecodigo.javabank.services.CustomerService;
 
 import java.util.*;
 
 /**
  * An {@link CustomerService} implementation
  */
-public class CustomerServiceImpl implements CustomerService {
+public class MockCustomerService implements CustomerService {
 
     private Map<Integer, Customer> customerMap = new HashMap<>();
 

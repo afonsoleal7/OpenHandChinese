@@ -1,6 +1,7 @@
 package org.academiadecodigo.javabank.controller;
 
 import org.academiadecodigo.javabank.factories.AccountFactory;
+import org.academiadecodigo.javabank.model.Customer;
 import org.academiadecodigo.javabank.model.account.Account;
 import org.academiadecodigo.javabank.model.account.AccountType;
 import org.academiadecodigo.javabank.services.AccountService;
@@ -12,8 +13,8 @@ import org.academiadecodigo.javabank.view.NewAccountView;
 public class NewAccountController extends AbstractController {
 
     private Integer newAccountId;
-    private AccountFactory accountFactory;
     private AccountService accountService;
+    private AccountFactory accountFactory;
 
     /**
      * Gets the new account id
@@ -25,21 +26,21 @@ public class NewAccountController extends AbstractController {
     }
 
     /**
-     * Sets the account factory
-     *
-     * @param accountFactory the account factory to set
-     */
-    public void setAccountFactory(AccountFactory accountFactory) {
-        this.accountFactory = accountFactory;
-    }
-
-    /**
      * Sets the account service
      *
      * @param accountService the account service to set
      */
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    /**
+     * Sets the account factory
+     *
+     * @param accountFactory
+     */
+    public void setAccountFactory(AccountFactory accountFactory) {
+        this.accountFactory = accountFactory;
     }
 
     /**
@@ -58,9 +59,10 @@ public class NewAccountController extends AbstractController {
     private int createAccount() {
 
         Account newAccount = accountFactory.createAccount(AccountType.CHECKING);
+        Customer accessingCustomer = authService.getAccessingCustomer();
 
+        accessingCustomer.addAccount(newAccount);
         accountService.add(newAccount);
-        authService.getAccessingCustomer().addAccount(newAccount);
 
         return newAccount.getId();
     }

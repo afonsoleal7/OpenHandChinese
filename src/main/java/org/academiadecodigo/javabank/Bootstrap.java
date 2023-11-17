@@ -6,9 +6,9 @@ import org.academiadecodigo.javabank.controller.transaction.DepositController;
 import org.academiadecodigo.javabank.controller.transaction.WithdrawalController;
 import org.academiadecodigo.javabank.factories.AccountFactory;
 import org.academiadecodigo.javabank.model.Customer;
-import org.academiadecodigo.javabank.services.AccountServiceImpl;
+import org.academiadecodigo.javabank.services.AccountService;
+import org.academiadecodigo.javabank.services.CustomerService;
 import org.academiadecodigo.javabank.services.AuthServiceImpl;
-import org.academiadecodigo.javabank.services.CustomerServiceImpl;
 import org.academiadecodigo.javabank.view.*;
 
 import java.util.HashMap;
@@ -20,8 +20,9 @@ import java.util.Map;
 public class Bootstrap {
 
     private AuthServiceImpl authService;
-    private CustomerServiceImpl customerService;
-    private AccountServiceImpl accountService;
+    private CustomerService customerService;
+    private AccountService accountService;
+    private AccountFactory accountFactory;
 
     /**
      * Sets the authentication service
@@ -37,7 +38,7 @@ public class Bootstrap {
      *
      * @param customerService the customer service to set
      */
-    public void setCustomerService(CustomerServiceImpl customerService) {
+    public void setCustomerService(CustomerService customerService) {
         this.customerService = customerService;
     }
 
@@ -46,24 +47,17 @@ public class Bootstrap {
      *
      * @param accountService the account service to set
      */
-    public void setAccountService(AccountServiceImpl accountService) {
+    public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
     }
 
     /**
-     * Creates a {@code CustomerService} and populates it with data
+     * Sets the account factory
+     *
+     * @param accountFactory
      */
-    public void loadCustomers() {
-
-        Customer c1 = new Customer();
-        Customer c2 = new Customer();
-        Customer c3 = new Customer();
-        c1.setName("Rui");
-        c2.setName("Sergio");
-        c3.setName("Bruno");
-        customerService.add(c1);
-        customerService.add(c2);
-        customerService.add(c3);
+    public void setAccountFactory(AccountFactory accountFactory) {
+        this.accountFactory = accountFactory;
     }
 
     /**
@@ -107,9 +101,9 @@ public class Bootstrap {
         // wire new account controller and view
         NewAccountView newAccountView = new NewAccountView();
         NewAccountController newAccountController = new NewAccountController();
+        newAccountController.setAccountFactory(accountFactory);
         newAccountController.setAccountService(accountService);
         newAccountController.setAuthService(authService);
-        newAccountController.setAccountFactory(new AccountFactory());
         newAccountController.setView(newAccountView);
         newAccountView.setNewAccountController(newAccountController);
 

@@ -60,4 +60,18 @@ public interface Account extends Model {
      * @return {@code true} if withdraw can be done
      */
     boolean canWithdraw();
+
+    /**
+     * Returns the owning customer's Id
+     *
+     * @return the owning customer's Id
+     */
+    Integer getCustomerId();
+
+    /**
+     * Sets the owning customer id
+     *
+     * @param id the owner customer id
+     */
+    void setCustomerId(Integer id);
 }
