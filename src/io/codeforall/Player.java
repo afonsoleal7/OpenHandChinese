@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 
 public class Player {
-    private static DeckOfCards deckOfCards = new DeckOfCards();
+    private static final DeckOfCards deckOfCards = new DeckOfCards();
 
     private String username;
     protected Card[][] cards;
@@ -120,10 +120,11 @@ public class Player {
 
     }
 
-    public void displayCards() throws IOException {
+    public String displayCards() throws IOException {
+        StringBuilder finalMessage = new StringBuilder();
 
         for (int i = 0; i < 3; i++) {
-            sendMessage("------------------------" + "\n");
+            finalMessage.append("------------------------").append("\n");
 
             StringBuilder s = new StringBuilder();
             for (int j = 0; j < 5; j++) {
@@ -132,9 +133,10 @@ public class Player {
                     s.append(" | ");
                 }
             }
-
-            sendMessage(s + "\n");
+            finalMessage.append(s).append("\n");
         }
+
+        return finalMessage.toString();
     }
     public boolean areThereCardsLeft() {
        for (int i = 0; i < 3; i++){
@@ -167,7 +169,7 @@ public class Player {
         }
         try {
             username = in.readLine();
-            sendMessage("Welcome to the game " + username);
+            sendMessage("Welcome to OpenHandChinese " + username);
             hasUsername = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -213,11 +215,7 @@ public class Player {
                 System.out.println("Card added to the bottom");
                 break;
         }
-        try {
-            displayCards();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        displayCardsCurrently();
 
 
     }
@@ -235,7 +233,7 @@ public class Player {
             case 3: addCardtoBottomRow(c);
             break;
         }
-        displayCards();
+        displayCardsCurrently();
 
 
     }
@@ -265,11 +263,7 @@ public class Player {
                 System.out.println("Card added to the bottom");
                 break;
         }
-        try {
-            displayCards();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        displayCardsCurrently();
 
     }
     public void sendMessage(String message) throws IOException {
@@ -277,6 +271,13 @@ public class Player {
         out.newLine();
         out.flush();
 
+    }
+    public void displayCardsCurrently(){
+        try {
+            sendMessage(displayCards());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) throws IOException {

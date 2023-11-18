@@ -16,11 +16,14 @@ public class Server {
     private ServerSocket serverSocket;
     private BufferedReader bufferedReader;
     public List<ServerWorker> workers;
+    public boolean start = false;
+
+
 
 
     public int connectionCount = 0;
 
-    private String name;
+
 
 
     public Server(int port) throws IOException {
@@ -28,6 +31,29 @@ public class Server {
         System.out.println("Binding to port " + port);
         serverSocket = new ServerSocket(port);
         start(serverSocket);
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        displayAllCards();
+        playRound();
+        playRound();
+
     }
 
     public static void main(String args[]) {
@@ -52,43 +78,85 @@ public class Server {
         //throw new RuntimeException(e);
     }
 
-    public void getConnections() {
 
-    }
 
 
     private void start(ServerSocket bindSocket) {
         workers = Collections.synchronizedList(new LinkedList<>());
         ExecutorService CachedPool = Executors.newCachedThreadPool();
-        while (true) {
+        while (connectionCount <= 2) {
 
 
             try {
 
                 // accepts client connections and instantiates worker dispatchers
-                if (connectionCount < 3) {
+
                     ServerWorker clientWorker = new ServerWorker(bindSocket.accept());
-
                     workers.add(clientWorker);
-                    connectionCount++;
                     CachedPool.submit(clientWorker);
+                    connectionCount++;
+
+                    if (connectionCount <= 3) {
+                        clientWorker.sendMessage("Waiting for more players to join" + connectionCount + "/3");
+                    }else{
+                        clientWorker.sendMessage("Game starting, pick where to place your inicial 5 cards");
 
 
-                }
+
+                    }
+
+
+
+
+
+
 
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+        enterUsername();
+        start = true;
+
+        System.out.println(workers.size());
 
 
     }
+    public void displayAllCards(){
+        String s = "";
+        StringBuilder d = new StringBuilder();
+        for (ServerWorker sw : workers) {
+            try {
+                d.append(sw.displayCards()).append("\n").toString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        for (ServerWorker sw : workers){
+            try {
+                sw.sendMessage(s);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
+        }
+        }
+
+            public void enterUsername(){
+                for (ServerWorker worker : workers) {
+                    worker.enterUsername();
+                }
+            }
 
 
 
-    public synchronized void playRound() throws IOException {
 
+
+
+    public void playRound() throws IOException {
+        synchronized (workers) {
             for (ServerWorker s : workers) {
                 if (!s.hasPlayed) {
                     s.playRound2();
@@ -109,6 +177,8 @@ public class Server {
                 }
             }
         }
+    }
+
 
 
 
@@ -121,8 +191,9 @@ public class Server {
         return true;
     }
 
+
     private class ServerWorker extends Player implements Runnable {
-        public boolean hasPlayed = false;
+        public volatile boolean hasPlayed = false;
 
 
         public ServerWorker(Socket clientSocket) throws IOException {
@@ -133,16 +204,24 @@ public class Server {
 
 
 
+
         @Override
         public void run() {
             while (true) {
+                while (start) {
+                    try {
+                        setInicialCards();
+                        hasPlayed = true;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
 
-                System.out.println("abba");
-                try {
-                    playRound();
 
 
-                    //super.enterUsername();
+                //super.enterUsername();
 
 
                 /*try {
@@ -193,14 +272,13 @@ public class Server {
             }*/
 
 
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+
                 }
 
             }
-        }
-    }
-}
+
+
+
 
 
 
