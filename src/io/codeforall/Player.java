@@ -33,15 +33,15 @@ public class Player {
     public Player(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
         this.outout = new PrintStream(clientSocket.getOutputStream());
-        this.prompt = new Prompt(clientSocket.getInputStream(), System.out);
+        this.prompt = new Prompt(clientSocket.getInputStream(), outout);
 
-        //in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        //out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         this.cards = new Card[3][5];
     }
-    public void test(){
 
-    }
+
+
 
     public String getUsername() {
         return username;
@@ -235,6 +235,7 @@ public class Player {
             case 3: addCardtoBottomRow(c);
             break;
         }
+        displayCards();
 
 
     }

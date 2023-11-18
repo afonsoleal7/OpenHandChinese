@@ -17,7 +17,8 @@ public class Server {
     private BufferedReader bufferedReader;
     public List<ServerWorker> workers;
 
-    public int ConnectionCount = 0;
+
+    public int connectionCount = 0;
 
     private String name;
 
@@ -39,6 +40,7 @@ public class Server {
         // try to create an instance of the ChatServer at port specified at args[0]
         try {
             new Server(8200);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,6 +50,10 @@ public class Server {
         //System.out.println("Invalid port number " + args[0]);
         //} catch (IOException e) {
         //throw new RuntimeException(e);
+    }
+
+    public void getConnections() {
+
     }
 
 
@@ -60,21 +66,15 @@ public class Server {
             try {
 
                 // accepts client connections and instantiates worker dispatchers
+                if (connectionCount < 3) {
+                    ServerWorker clientWorker = new ServerWorker(bindSocket.accept());
 
-                ServerWorker clientWorker = new ServerWorker(bindSocket.accept());
-
-                workers.add(clientWorker);
-                ConnectionCount++;
-
-                CachedPool.submit(clientWorker);
-
-                //InicialCards();
-                System.out.println("b");
+                    workers.add(clientWorker);
+                    connectionCount++;
+                    CachedPool.submit(clientWorker);
 
 
-                // launch the client thread
-                //Thread clientThread = new Thread(clientDispatcher);
-                //clientThread.start();
+                }
 
 
             } catch (IOException e) {
@@ -86,16 +86,43 @@ public class Server {
     }
 
 
-    public void InicialCards() throws IOException{
-        synchronized (workers) {
+
+    public synchronized void playRound() throws IOException {
+
             for (ServerWorker s : workers) {
-                s.setInicialCards();
+                if (!s.hasPlayed) {
+                    s.playRound2();
+                    System.out.println(workers.size());
+                    s.hasPlayed = true;
+                    workers.notifyAll();
+                } else {
+                    try {
+                        workers.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            if (allPlayersHavePlayed()) {
+                for (ServerWorker s : workers) {
+                    s.hasPlayed = false;
+                }
             }
         }
+
+
+
+    private boolean allPlayersHavePlayed() {
+        for (ServerWorker s : workers) {
+            if (!s.hasPlayed) {
+                return false;
+            }
+        }
+        return true;
     }
 
-
     private class ServerWorker extends Player implements Runnable {
+        public boolean hasPlayed = false;
 
 
         public ServerWorker(Socket clientSocket) throws IOException {
@@ -105,18 +132,17 @@ public class Server {
         }
 
 
+
         @Override
         public void run() {
             while (true) {
 
                 System.out.println("abba");
                 try {
-                    super.playRound2();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                    playRound();
 
-                //super.enterUsername();
+
+                    //super.enterUsername();
 
 
                 /*try {
@@ -167,9 +193,14 @@ public class Server {
             }*/
 
 
-            }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
+            }
         }
     }
 }
+
+
 
