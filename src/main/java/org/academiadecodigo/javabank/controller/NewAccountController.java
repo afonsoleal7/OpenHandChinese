@@ -14,7 +14,6 @@ public class NewAccountController extends AbstractController {
 
     private Integer newAccountId;
     private AccountService accountService;
-    private AccountFactory accountFactory;
 
     /**
      * Gets the new account id
@@ -35,15 +34,6 @@ public class NewAccountController extends AbstractController {
     }
 
     /**
-     * Sets the account factory
-     *
-     * @param accountFactory
-     */
-    public void setAccountFactory(AccountFactory accountFactory) {
-        this.accountFactory = accountFactory;
-    }
-
-    /**
      * Creates a new {@link Account}
      *
      * @see Controller#init()
@@ -58,7 +48,7 @@ public class NewAccountController extends AbstractController {
 
     private int createAccount() {
 
-        Account newAccount = accountFactory.createAccount(AccountType.CHECKING);
+        Account newAccount = AccountFactory.createAccount(AccountType.CHECKING);
         Customer accessingCustomer = authService.getAccessingCustomer();
 
         accessingCustomer.addAccount(newAccount);

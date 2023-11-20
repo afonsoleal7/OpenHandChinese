@@ -16,7 +16,7 @@ public class AccountFactory {
      * @param accountType the account type
      * @return the new account
      */
-    public Account createAccount(AccountType accountType) {
+    public static Account createAccount(AccountType accountType) {
 
         Account newAccount;
         switch (accountType) {

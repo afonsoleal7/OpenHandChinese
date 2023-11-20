@@ -22,7 +22,6 @@ public class Bootstrap {
     private AuthServiceImpl authService;
     private CustomerService customerService;
     private AccountService accountService;
-    private AccountFactory accountFactory;
 
     /**
      * Sets the authentication service
@@ -51,14 +50,6 @@ public class Bootstrap {
         this.accountService = accountService;
     }
 
-    /**
-     * Sets the account factory
-     *
-     * @param accountFactory
-     */
-    public void setAccountFactory(AccountFactory accountFactory) {
-        this.accountFactory = accountFactory;
-    }
 
     /**
      * Wires the necessary object dependencies
@@ -101,7 +92,6 @@ public class Bootstrap {
         // wire new account controller and view
         NewAccountView newAccountView = new NewAccountView();
         NewAccountController newAccountController = new NewAccountController();
-        newAccountController.setAccountFactory(accountFactory);
         newAccountController.setAccountService(accountService);
         newAccountController.setAuthService(authService);
         newAccountController.setView(newAccountView);

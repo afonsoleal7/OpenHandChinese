@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS javabank;
-CREATE DATABASE javabank;
-USE javabank;
+DROP DATABASE IF EXISTS jdbcbank;
+CREATE DATABASE jdbcbank;
+USE jdbcbank;
 
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS account;

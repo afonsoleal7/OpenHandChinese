@@ -1,10 +1,12 @@
 package org.academiadecodigo.javabank;
 
 import org.academiadecodigo.javabank.controller.Controller;
-import org.academiadecodigo.javabank.factories.AccountFactory;
-import org.academiadecodigo.javabank.persistence.ConnectionManager;
-import org.academiadecodigo.javabank.services.jdbc.JdbcAccountService;
-import org.academiadecodigo.javabank.services.jdbc.JdbcCustomerService;
+import org.academiadecodigo.javabank.persistence.jdbc.JDBCSessionManager;
+import org.academiadecodigo.javabank.persistence.daos.jdbc.JDBCAccountDao;
+import org.academiadecodigo.javabank.persistence.daos.jdbc.JDBCCustomerDao;
+import org.academiadecodigo.javabank.persistence.jdbc.JDBCTransactionManager;
+import org.academiadecodigo.javabank.services.AccountServiceImpl;
+import org.academiadecodigo.javabank.services.CustomerServiceImpl;
 import org.academiadecodigo.javabank.services.AuthServiceImpl;
 
 public class App {
@@ -17,23 +19,35 @@ public class App {
 
     private void bootStrap() {
 
-        ConnectionManager connectionManager = new ConnectionManager();
+        JDBCSessionManager JDBCSessionManager = new JDBCSessionManager();
+        JDBCTransactionManager transactionManager = new JDBCTransactionManager();
+        transactionManager.setConnectionManager(JDBCSessionManager);
+        JDBCAccountDao JDBCAccountDao = new JDBCAccountDao();
+        JDBCCustomerDao JDBCCustomerDao = new JDBCCustomerDao();
 
-        AccountFactory accountFactory = new AccountFactory();
-        JdbcAccountService accountService = new JdbcAccountService(connectionManager, accountFactory);
-        JdbcCustomerService customerService = new JdbcCustomerService(connectionManager);
-        customerService.setAccountService(accountService);
+        JDBCAccountDao.setConnectionManager(JDBCSessionManager);
+        JDBCCustomerDao.setAccountDAO(JDBCAccountDao);
+        JDBCCustomerDao.setConnectionManager(JDBCSessionManager);
+
+        AccountServiceImpl accountService = new AccountServiceImpl();
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
+
+        customerService.setCustomerDAO(JDBCCustomerDao);
+        customerService.setTm(transactionManager);
+
+        accountService.setAccountDAO(JDBCAccountDao);
+        accountService.setTm(transactionManager);
 
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.setAuthService(new AuthServiceImpl());
         bootstrap.setAccountService(accountService);
         bootstrap.setCustomerService(customerService);
-        bootstrap.setAccountFactory(accountFactory);
         Controller controller = bootstrap.wireObjects();
 
         // start application
         controller.init();
 
-        connectionManager.close();
+        JDBCSessionManager.stopSession();
+
     }
 }

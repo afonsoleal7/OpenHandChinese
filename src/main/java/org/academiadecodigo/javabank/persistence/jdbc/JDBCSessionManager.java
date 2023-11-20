@@ -1,15 +1,17 @@
-package org.academiadecodigo.javabank.persistence;
+package org.academiadecodigo.javabank.persistence.jdbc;
+
+import org.academiadecodigo.javabank.persistence.SessionManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionManager {
+public class JDBCSessionManager implements SessionManager<Connection> {
 
     private static final String DEFAULT_USER = "root";
     private static final String DEFAULT_PASS = "";
     private static final String DEFAULT_HOST = "localhost";
-    private static final String DEFAULT_DB = "javabank";
+    private static final String DEFAULT_DB = "jdbcbank";
 
     private static final String CONNECTOR = "jdbc:mysql:";
 
@@ -18,29 +20,31 @@ public class ConnectionManager {
     private String pass;
     private Connection connection;
 
-    public ConnectionManager(String user, String pass, String host, String database) {
+    public JDBCSessionManager(String user, String pass, String host, String database) {
         this.user = user;
         this.pass = pass;
         this.dbUrl = CONNECTOR + "//" + host + "/" + database;
     }
 
-    public ConnectionManager() {
+    public JDBCSessionManager() {
         this(DEFAULT_USER, DEFAULT_PASS, DEFAULT_HOST, DEFAULT_DB);
     }
 
-    public Connection getConnection() {
+
+    @Override
+    public void startSession() {
 
         try {
-            if (connection == null) {
+            if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(dbUrl, user, pass);
             }
         } catch (SQLException ex) {
             System.out.println("Failure to connect to database : " + ex.getMessage());
         }
-        return connection;
     }
 
-    public void close() {
+    @Override
+    public void stopSession() {
         try {
             if (connection != null) {
                 connection.close();
@@ -48,5 +52,11 @@ public class ConnectionManager {
         } catch (SQLException ex) {
             System.out.println("Failure to close database connections: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public Connection getCurrentSession() {
+        startSession();
+        return connection;
     }
 }
