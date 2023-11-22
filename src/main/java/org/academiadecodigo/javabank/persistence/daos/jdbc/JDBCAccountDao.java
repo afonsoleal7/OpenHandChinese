@@ -1,38 +1,29 @@
 package org.academiadecodigo.javabank.persistence.daos.jdbc;
 
-import org.academiadecodigo.javabank.factories.AccountFactory;
-import org.academiadecodigo.javabank.model.Customer;
 import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.AccountType;
 import org.academiadecodigo.javabank.persistence.TransactionException;
 import org.academiadecodigo.javabank.persistence.daos.AccountDao;
-import org.academiadecodigo.javabank.persistence.jdbc.JDBCSessionManager;
+import org.academiadecodigo.javabank.persistence.jdbc.JPASessionManager;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class JDBCAccountDao implements AccountDao {
 
-    private JDBCSessionManager sm;
+    private JPASessionManager sm;
 
 
-    public void setConnectionManager(JDBCSessionManager JDBCSessionManager) {
+    public void setConnectionManager(JPASessionManager JDBCSessionManager) {
         this.sm = JDBCSessionManager;
     }
 
     @Override
     public List<Account> findAll() {
-        List<Account> accounts = new LinkedList<>();
+        /*List<Account> accounts = new LinkedList<>();
 
         try {
             String query = "SELECT * FROM account";
-            Statement statement = sm.getCurrentSession().createStatement();
+            Statement statement = sm.getCurrentSession();
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -51,12 +42,13 @@ public class JDBCAccountDao implements AccountDao {
             e.printStackTrace();
         }
 
-        return accounts;
+        return accounts; */
+        return null;
     }
 
     @Override
     public Account findById(Integer id) {
-        Account account = null;
+        /*Account account = null;
 
         try {
 
@@ -83,7 +75,11 @@ public class JDBCAccountDao implements AccountDao {
             e.printStackTrace();
         }
 
-        return account;
+
+
+
+         */
+        return null;
     }
 
     @Override
@@ -109,7 +105,7 @@ public class JDBCAccountDao implements AccountDao {
     @Override
     public void delete(Integer id) {
 
-        try {
+        /*try {
 
             String query = "DELETE FROM account WHERE id = ?";
 
@@ -123,10 +119,11 @@ public class JDBCAccountDao implements AccountDao {
         } catch (SQLException e) {
             throw new TransactionException();
         }
-
+     */
     }
 
     private Integer update(Account account) throws SQLException {
+        /*
 
 
         String query = "UPDATE account SET balance = ? WHERE id = ?";
@@ -139,12 +136,15 @@ public class JDBCAccountDao implements AccountDao {
         statement.executeUpdate();
         statement.close();
 
+         */
+
         return account.getId();
 
     }
 
 
     private Integer insert(Account account) throws SQLException {
+        /*
 
 
         String query = "INSERT INTO account(account_type, balance, customer_id) " +
@@ -167,6 +167,9 @@ public class JDBCAccountDao implements AccountDao {
         statement.close();
         return account.getId();
 
+         */
+
+        return null;
     }
 
 }

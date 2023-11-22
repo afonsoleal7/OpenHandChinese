@@ -1,20 +1,20 @@
 package org.academiadecodigo.javabank.persistence.daos.jdbc;
 
 import org.academiadecodigo.javabank.model.Customer;
-import org.academiadecodigo.javabank.model.account.Account;
 import org.academiadecodigo.javabank.persistence.TransactionException;
 import org.academiadecodigo.javabank.persistence.daos.CustomerDao;
-import org.academiadecodigo.javabank.persistence.jdbc.JDBCSessionManager;
+import org.academiadecodigo.javabank.persistence.jdbc.JPASessionManager;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class JDBCCustomerDao implements CustomerDao {
 
-    private JDBCSessionManager sm;
+    private JPASessionManager sm;
     private JDBCAccountDao accountDao;
 
 
@@ -22,85 +22,57 @@ public class JDBCCustomerDao implements CustomerDao {
         this.accountDao = JDBCAccountDao;
     }
 
-    public void setConnectionManager(JDBCSessionManager JDBCSessionManager) {
+    public void setConnectionManager(JPASessionManager JDBCSessionManager) {
         this.sm = JDBCSessionManager;
     }
 
     @Override
     public Customer findById(Integer id) {
 
-        Customer customer = null;
 
         try {
-            String query = "SELECT customer.id AS cid, first_name, last_name, phone, email, account.id AS aid " +
-                    "FROM customer " +
-                    "LEFT JOIN account " +
-                    "ON customer.id = account.customer_id " +
-                    "WHERE customer.id = ?";
 
+            // 1 - get a CriteriaBuilder object from the EntityManager
+            CriteriaBuilder builder = sm.getCurrentSession().getCriteriaBuilder();
 
-            PreparedStatement statement = sm.getCurrentSession().prepareStatement(query);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            // 2 - create a new CriteriaQuery instance for the Customer entity
+            CriteriaQuery<Customer> criteriaQuery = builder.createQuery(Customer.class);
 
-            while (resultSet.next()) {
+            // 3 - get the root of the query, from where all navigation starts
+            Root<Customer> root = criteriaQuery.from(Customer.class);
 
-                if (customer == null) {
-                    customer = buildCustomer(resultSet);
-                }
+            // 4 - specify the item that is to be returned in the query result
+            criteriaQuery.select(root);
 
-                int accountId = resultSet.getInt("aid");
-                Account account = accountDao.findById(accountId);
+            // 5 - add query restrictions
+            criteriaQuery.where(builder.equal(root.get("id"), id));
 
-                if (account == null) {
-                    break;
-                }
+            // 6 - create and execute a query using the criteria
+            return sm.getCurrentSession().createQuery(criteriaQuery).getSingleResult();
 
-                customer.addAccount(account);
+        } finally {
+            if (sm != null) {
+                sm.getCurrentSession().close();
             }
-
-            statement.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return customer;
-
     }
 
 
     @Override
     public List<Customer> findAll() {
+        CriteriaBuilder builder = sm.getCurrentSession().getCriteriaBuilder();
 
-        Map<Integer, Customer> customers = new HashMap<>();
+        // 2 - create a new CriteriaQuery instance for the Customer entity
+        CriteriaQuery<Customer> criteriaQuery = builder.createQuery(Customer.class);
 
-        try {
-            String query = "SELECT customer.id AS cid, first_name, last_name, phone, email, account.id AS aid " +
-                    "FROM customer " +
-                    "LEFT JOIN account " +
-                    "ON customer.id = account.customer_id";
+        // 3 - get the root of the query, from where all navigation starts
+        Root<Customer> root = criteriaQuery.from(Customer.class);
 
-            PreparedStatement statement = sm.getCurrentSession().prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
+                // 4 - specify the item that is to be returned in the query result
+        criteriaQuery.select(root);
 
-            while (resultSet.next()) {
-                if (!customers.containsKey(resultSet.getInt("cid"))) {
-                    Customer customer = buildCustomer(resultSet);
-                    customers.put(customer.getId(), customer);
-                }
 
-                Account account = accountDao.findById(resultSet.getInt("aid"));
-                if (account != null) {
-                    customers.get(resultSet.getInt("cid")).addAccount(account);
-                }
-            }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return new LinkedList<>(customers.values());
+        return sm.getCurrentSession().createQuery(criteriaQuery).getResultList();
     }
 
 
@@ -118,6 +90,18 @@ public class JDBCCustomerDao implements CustomerDao {
     }
 
     private Integer update(Customer customer) {
+
+
+        // 6 - create and execute a query using the criteria
+
+
+
+
+        return 1;
+
+}
+
+        /*
 
         try {
 
@@ -140,11 +124,14 @@ public class JDBCCustomerDao implements CustomerDao {
             throw new TransactionException();
         }
 
-        return customer.getId();
+         */
 
-    }
+        //return customer.getId();
+
+
 
     private Integer insert(Customer customer) throws SQLException {
+        /*
 
         String query = "INSERT INTO customer(first_name, last_name, email, phone) " +
                 "VALUES(?, ?, ?, ?)";
@@ -168,11 +155,29 @@ public class JDBCCustomerDao implements CustomerDao {
 
         return customer.getId();
 
+         */
+        return customer.getId();
+
 
     }
 
     @Override
     public List<Integer> getCustomerIds() {
+        CriteriaBuilder builder = sm.getCurrentSession().getCriteriaBuilder();
+
+
+        CriteriaQuery<Integer> criteriaQuery = builder.createQuery(Integer.class);
+
+
+        Root<Customer> root = criteriaQuery.from(Customer.class);
+
+
+        criteriaQuery.select(root.get("id"));
+
+
+        return sm.getCurrentSession().createQuery(criteriaQuery).getResultList();
+
+        /*
 
         List<Integer> customerIds = new LinkedList<>();
 
@@ -192,6 +197,10 @@ public class JDBCCustomerDao implements CustomerDao {
         }
 
         return customerIds;
+
+         */
+        return null;
+
 
     }
 
@@ -218,6 +227,11 @@ public class JDBCCustomerDao implements CustomerDao {
 
     @Override
     public void delete(Integer id) {
+        CriteriaBuilder builder = sm.getCurrentSession().getCriteriaBuilder();
+        CriteriaDelete<Customer> criteriaQuery = builder.createCriteriaDelete(Customer.class);
+        Root<Customer> root = criteriaQuery.from(Customer.class);
+        criteriaQuery.where(builder.equal(root.get("id"), id));
+        /*
         try {
 
             String query = "DELETE FROM customer WHERE id = ?";
@@ -232,5 +246,6 @@ public class JDBCCustomerDao implements CustomerDao {
         } catch (SQLException e) {
             throw new TransactionException();
         }
+    } */
     }
 }

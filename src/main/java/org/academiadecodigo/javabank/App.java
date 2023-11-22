@@ -1,10 +1,10 @@
 package org.academiadecodigo.javabank;
 
 import org.academiadecodigo.javabank.controller.Controller;
-import org.academiadecodigo.javabank.persistence.jdbc.JDBCSessionManager;
+import org.academiadecodigo.javabank.persistence.jdbc.JPASessionManager;
 import org.academiadecodigo.javabank.persistence.daos.jdbc.JDBCAccountDao;
 import org.academiadecodigo.javabank.persistence.daos.jdbc.JDBCCustomerDao;
-import org.academiadecodigo.javabank.persistence.jdbc.JDBCTransactionManager;
+import org.academiadecodigo.javabank.persistence.jdbc.JPATransactionManager;
 import org.academiadecodigo.javabank.services.AccountServiceImpl;
 import org.academiadecodigo.javabank.services.CustomerServiceImpl;
 import org.academiadecodigo.javabank.services.AuthServiceImpl;
@@ -19,8 +19,8 @@ public class App {
 
     private void bootStrap() {
 
-        JDBCSessionManager JDBCSessionManager = new JDBCSessionManager();
-        JDBCTransactionManager transactionManager = new JDBCTransactionManager();
+        JPASessionManager JDBCSessionManager = new JPASessionManager();
+        JPATransactionManager transactionManager = new JPATransactionManager();
         transactionManager.setConnectionManager(JDBCSessionManager);
         JDBCAccountDao JDBCAccountDao = new JDBCAccountDao();
         JDBCCustomerDao JDBCCustomerDao = new JDBCCustomerDao();
@@ -47,7 +47,6 @@ public class App {
         // start application
         controller.init();
 
-        JDBCSessionManager.stopSession();
 
     }
 }
